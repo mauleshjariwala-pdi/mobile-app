@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Firebase deploy cache and the unused Firebase welcome page (firebase.json deploys /build)
+/.firebase
+/dist

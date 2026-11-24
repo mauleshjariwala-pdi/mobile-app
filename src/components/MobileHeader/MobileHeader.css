@@ -1,0 +1,57 @@
+.mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+  /* Always a 56px title bar; the status-bar / Dynamic Island area is added on top */
+  box-sizing: border-box;
+  height: calc(56px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 12px 0;
+  color: #fff;
+  background: var(--c-header-gradient);
+  box-shadow: 0 4px 16px rgba(57, 149, 63, 0.25);
+}
+
+.mobile-header__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-header .mobile-header__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-header .mobile-header__back:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.mobile-header .mobile-header__back:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.mobile-header__side--end {
+  display: flex;
+  justify-content: flex-end;
+}

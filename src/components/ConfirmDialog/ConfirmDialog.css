@@ -1,0 +1,119 @@
+.cd-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: var(--c-overlay);
+  animation: cd-fade 0.2s ease;
+}
+
+@keyframes cd-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.cd-dialog {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px 20px calc(20px + env(safe-area-inset-bottom));
+  text-align: center;
+  background: var(--c-surface);
+  border-radius: 22px 22px 0 0;
+  animation: cd-sheet 0.25s ease;
+}
+
+@keyframes cd-sheet {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.cd-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 12px;
+  color: var(--c-critical);
+  background: var(--c-critical-soft);
+  border-radius: 50%;
+}
+
+.cd-dialog__title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-text);
+}
+
+.cd-dialog__text {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--c-muted);
+}
+
+.cd-dialog__actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.cd-dialog .cd-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cd-dialog .cd-btn:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+.cd-dialog .cd-btn--ghost {
+  color: var(--c-text);
+  background: var(--c-surface-muted);
+}
+
+.cd-dialog .cd-btn--danger {
+  color: #fff;
+  background: var(--c-critical);
+}
+
+@media (min-width: 640px) {
+  .cd-backdrop {
+    align-items: center;
+    padding: 20px;
+  }
+
+  .cd-dialog {
+    padding-bottom: 20px;
+    border-radius: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd-backdrop,
+  .cd-dialog {
+    animation: none;
+  }
+}

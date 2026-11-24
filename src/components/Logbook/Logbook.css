@@ -1,0 +1,1055 @@
+/*
+ * Logbook page, light and dark palettes from the Figma design.
+ * The shared --c-* tokens are redefined here so the header and the form
+ * fields pick up the page palette too.
+ */
+.logbook {
+  --lb-bg: #e6e6e8;
+  --lb-header: #f4f4f5;
+  --lb-surface: #f4f4f5;
+  --lb-panel: #dcdce0;
+  --lb-text: #2a2a30;
+  --lb-muted: #6b6c75;
+  --lb-tile-text: #3a3b42;
+  --lb-tile-dimmed: #8a8b93;
+  --lb-disabled-bg: #c9cad0;
+  --lb-disabled-text: #7c7d86;
+  --lb-border: #d4d4d9;
+  --lb-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --lb-hover: rgba(0, 0, 0, 0.04);
+  --lb-focus: #2a2a30;
+  --lb-accent: #0022ff;
+  --lb-accent-hover: #2340ff;
+  --lb-selected: radial-gradient(95.67% 100% at 50% 0%, #001339 0%, #0022ff 100%);
+  --lb-primary: var(--lb-accent);
+  --lb-primary-soft: rgba(0, 34, 255, 0.1);
+  --lb-button: var(--lb-accent);
+  --lb-radius: 8px;
+
+  --c-bg: var(--lb-bg);
+  --c-surface: var(--lb-surface);
+  --c-surface-2: #e2e2e6;
+  --c-surface-muted: #e2e2e6;
+  --c-text: var(--lb-text);
+  --c-muted: var(--lb-muted);
+  --c-faint: #9a9ba3;
+  --c-border: var(--lb-border);
+  --c-shadow: transparent;
+  --c-primary: var(--lb-accent);
+  --c-primary-soft: var(--lb-primary-soft);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--lb-bg);
+  color: var(--lb-text);
+  color-scheme: light;
+  text-align: left;
+}
+
+:root[data-theme='dark'] .logbook {
+  --lb-bg: #111216;
+  --lb-header: #111216;
+  --lb-surface: #1f2026;
+  --lb-panel: #18191e;
+  --lb-text: #ffffff;
+  --lb-muted: #9c9da6;
+  --lb-tile-text: #e6e6ea;
+  --lb-tile-dimmed: #7d7e87;
+  --lb-disabled-bg: #4a4c5a;
+  --lb-disabled-text: #8e8f99;
+  --lb-border: #2e3038;
+  --lb-shadow: none;
+  --lb-hover: rgba(255, 255, 255, 0.04);
+  --lb-focus: #ffffff;
+  --lb-primary-soft: rgba(80, 110, 255, 0.18);
+
+  --c-surface-2: #2a2c33;
+  --c-surface-muted: #2a2c33;
+  --c-faint: #6d6e78;
+
+  color-scheme: dark;
+}
+
+.logbook *,
+.logbook *::before,
+.logbook *::after {
+  box-sizing: border-box;
+}
+
+.logbook__content {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  /* Leave room for the floating bottom nav */
+  padding: 16px 12px calc(110px + env(safe-area-inset-bottom));
+}
+
+.lb-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: lb-fade-in 0.25s ease;
+  margin: 5px;
+}
+
+@keyframes lb-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Header ---------- */
+
+.logbook .mobile-header {
+  background: var(--lb-header);
+  border-bottom: 1px solid var(--lb-border);
+  box-shadow: none;
+}
+
+.logbook .mobile-header__title {
+  font-size: 16px;
+  color: var(--lb-text);
+}
+
+.logbook .mobile-header .mobile-header__back,
+.logbook .mobile-header .mobile-header__back:hover {
+  color: var(--lb-text);
+}
+
+.logbook .mobile-header .mobile-header__back:hover {
+  background: var(--lb-hover);
+}
+
+/* ---------- Start step: equipment, date and purpose ---------- */
+
+.lb-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lb-heading {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--lb-text);
+}
+
+.lb-equipment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  background: var(--lb-panel);
+  border: 1px solid var(--lb-border);
+  border-radius: 10px;
+}
+
+.lb-equipment__label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--lb-muted);
+}
+
+.lb-pump-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 10px;
+}
+
+/* Pump tile and purpose card share the hidden radio + selected gradient pattern */
+.lb-pump,
+.lb-purpose {
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+  border-radius: 8px;
+  box-shadow: var(--lb-shadow);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.lb-pump input,
+.lb-purpose input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lb-pump:hover:not(.lb-pump--selected),
+.lb-purpose:hover:not(.lb-purpose--selected) {
+  background-color: var(--lb-hover);
+}
+
+.lb-pump:has(input:focus-visible),
+.lb-purpose:has(input:focus-visible) {
+  outline: 2px solid var(--lb-focus);
+  outline-offset: 2px;
+}
+
+/* Once something is picked, the other choices in the group fade back */
+.lb-pump-grid:has(.lb-pump--selected) .lb-pump:not(.lb-pump--selected),
+.lb-purpose-list:has(.lb-purpose--selected) .lb-purpose:not(.lb-purpose--selected) {
+  color: var(--lb-tile-dimmed);
+}
+
+.lb-pump--selected,
+.lb-purpose--selected {
+  color: #fff;
+  background: var(--lb-selected);
+  border-color: transparent;
+}
+
+.lb-pump {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--lb-tile-text);
+}
+
+.lb-pump--selected {
+  color: #fff;
+}
+
+.lb-purpose-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lb-purpose {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 70px;
+  padding: 0 20px;
+  color: var(--lb-tile-text);
+}
+
+.lb-purpose__label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lb-purpose--selected .lb-purpose__label {
+  color: #fff;
+}
+
+/* ---------- Form step ---------- */
+
+.lb-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 16px;
+  background: var(--lb-surface);
+  border-radius: var(--lb-radius);
+  border: 1px solid var(--lb-border);
+  box-shadow: var(--lb-shadow);
+}
+
+.lb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lb-field__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lb-text);
+}
+
+.lb-field__required {
+  color: var(--c-critical-text);
+}
+
+.lb-field__control {
+  min-width: 0;
+}
+
+.lb-field__hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--lb-muted);
+}
+
+/* 16px font-size prevents iOS from zooming into focused inputs */
+.lb-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--lb-text);
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.lb-input:focus {
+  background: var(--lb-surface);
+  border-color: var(--lb-primary);
+  box-shadow: 0 0 0 3px var(--lb-primary-soft);
+}
+
+.lb-input::placeholder {
+  color: var(--c-faint);
+}
+
+.lb-select {
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236b6b76' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+
+.lb-textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.lb-input-group {
+  position: relative;
+}
+
+.lb-input-group .lb-input {
+  padding-right: 72px;
+}
+
+.lb-input-group__unit {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lb-text);
+  background: var(--lb-primary-soft);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Yes / No segmented control */
+.lb-segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: var(--lb-bg);
+  border: 1.5px solid var(--lb-border);
+  border-radius: 12px;
+}
+
+.lb-segmented__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lb-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lb-segmented__option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lb-segmented__option:has(input:focus-visible) {
+  outline: 2px solid var(--lb-primary);
+  outline-offset: 1px;
+}
+
+.lb-segmented__option--active {
+  background: var(--lb-surface);
+  color: var(--lb-text);
+  box-shadow: 0 2px 8px var(--c-shadow-strong);
+}
+
+/* Buttons */
+.logbook .lb-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--lb-radius);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.logbook .lb-btn--primary {
+  color: #fff;
+  background: var(--lb-button);
+}
+
+.logbook .lb-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.logbook .lb-btn--primary:hover:not(:disabled) {
+  background: var(--lb-accent-hover);
+}
+
+.logbook .lb-btn:disabled {
+  cursor: not-allowed;
+}
+
+.logbook .lb-btn--primary:disabled {
+  color: var(--lb-disabled-text);
+  background: var(--lb-disabled-bg);
+}
+
+.logbook .lb-btn:focus-visible {
+  outline: 2px solid var(--lb-focus);
+  outline-offset: 3px;
+}
+
+.lb-message {
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+.lb-message--success {
+  color: var(--c-ok-text);
+  background: var(--c-ok-soft);
+}
+
+.lb-message--error {
+  color: var(--c-critical-text);
+  background: var(--c-critical-soft);
+}
+
+.lb-message--info {
+  color: var(--c-muted);
+}
+
+/* Rig layout could not be loaded: message, then Try again */
+.lb-message > p {
+  margin: 0 0 10px;
+}
+
+/* ---------- Large phones / small tablets ---------- */
+@media (min-width: 560px) {
+  .logbook .lb-btn {
+    width: auto;
+    min-width: 220px;
+    align-self: center;
+  }
+}
+
+/* ---------- Tablets / iPad ---------- */
+@media (min-width: 768px) {
+  .logbook__content {
+    padding-top: 32px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .lb-card {
+    padding: 24px;
+  }
+
+  /* Label beside the input, like the web form */
+  .lb-field {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: start;
+    gap: 16px;
+  }
+
+  .lb-field__label {
+    padding-top: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-step,
+  .lb-pump,
+  .lb-purpose,
+  .lb-input,
+  .lb-segmented__option {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Fade-in used by the component chips */
+@keyframes lb-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ---------- Searchable picker (trigger + chips) ---------- */
+
+.logbook .lb-picker__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lb-picker__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-picker__value--placeholder {
+  color: var(--c-faint);
+}
+
+.lb-picker__chevron {
+  flex: none;
+  display: flex;
+  color: var(--lb-muted);
+}
+
+.lb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lb-primary);
+  background: var(--lb-primary-soft);
+  border: 1px solid color-mix(in srgb, var(--lb-primary) 30%, transparent);
+  border-radius: 999px;
+  animation: lb-reveal 0.2s ease;
+}
+
+.logbook .lb-chip__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.logbook .lb-chip__remove:hover {
+  background: color-mix(in srgb, var(--lb-primary) 15%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-chip {
+    animation: none;
+  }
+}
+
+/* ---------- Fill form, review and result ---------- */
+
+.logbook {
+  --lb-link-accent: #2f5ff5;
+  --lb-caption: #2f5ff5;
+  --lb-missing-bg: #ff6b6b;
+  --lb-remove: #e5484d;
+  --lb-success: radial-gradient(120% 90% at 25% 0%, #2c7a2c 0%, #1fae1f 55%, #22c55e 100%);
+  --lb-failure: radial-gradient(120% 90% at 25% 0%, #7a2020 0%, #d63a3a 55%, #ef4444 100%);
+
+  --c-button: var(--lb-accent);
+  --c-critical: var(--lb-remove);
+  --c-overlay: rgba(29, 27, 38, 0.45);
+}
+
+:root[data-theme='dark'] .logbook {
+  --lb-link-accent: #5b82ff;
+  --lb-caption: #5b82ff;
+  --lb-remove: #ff7676;
+
+  --c-overlay: rgba(0, 0, 0, 0.6);
+}
+
+/* Rig, pump and purpose under the header */
+.lb-context {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--lb-muted);
+  background: var(--lb-header);
+  border-bottom: 1px solid var(--lb-border);
+}
+
+.logbook .lb-btn--secondary {
+  color: var(--lb-text);
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+}
+
+/* Missing-fields banner and the action button stay above the bottom nav */
+.lb-actions {
+  position: sticky;
+  /* Sits just above the missing-fields banner, or the bottom nav when nothing is missing */
+  bottom: calc(var(--nav-height, 72px) + env(safe-area-inset-bottom) + var(--lb-missing-height, 0px));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 -12px;
+  padding: 12px;
+  background: var(--lb-bg);
+}
+
+/* Leave room so the button never ends up under the fixed banner */
+.lb-actions--missing {
+  margin-bottom: var(--lb-missing-height, 0px);
+}
+
+/* Fixed on top of the bottom nav, full width, whatever the scroll position */
+.lb-missing {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-height, 72px) + env(safe-area-inset-bottom));
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px max(12px, calc((100% - 696px) / 2));
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--lb-missing-bg);
+}
+
+.lb-missing svg {
+  flex: none;
+}
+
+/* ---------- Component selector ---------- */
+
+.cs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-search,
+.logbook .cs-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 14px;
+  color: var(--lb-muted);
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius);
+  box-shadow: var(--lb-shadow);
+}
+
+.cs-search:focus-within {
+  border-color: var(--lb-link-accent);
+  box-shadow: 0 0 0 3px var(--lb-primary-soft);
+}
+
+/* 16px stops iOS zooming into the field */
+.cs-search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  color: var(--lb-text);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.cs-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.logbook .cs-search__clear {
+  display: flex;
+  padding: 6px;
+  color: var(--lb-muted);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.logbook .cs-summary {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cs-summary__count {
+  flex: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--lb-text);
+}
+
+.cs-summary__count--active {
+  color: var(--lb-link-accent);
+}
+
+.cs-summary__preview {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  color: var(--lb-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-summary svg {
+  flex: none;
+  margin-left: auto;
+}
+
+.cs-caption {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lb-caption);
+}
+
+.cs-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cs-row {
+  display: flex;
+  align-items: stretch;
+  min-height: 60px;
+  overflow: hidden;
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+  border-radius: 6px;
+  box-shadow: var(--lb-shadow);
+}
+
+.cs-row__name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--lb-text);
+}
+
+.cs-row__numbers {
+  flex: none;
+  display: flex;
+}
+
+.logbook .cs-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  padding: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--lb-tile-text);
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--lb-border);
+  border-radius: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.logbook .cs-number:hover:not(.cs-number--on) {
+  background: var(--lb-hover);
+}
+
+.logbook .cs-number--on {
+  color: #fff;
+  background: var(--lb-selected);
+  box-shadow: inset 0 0 0 1px var(--lb-link-accent);
+}
+
+.logbook .cs-number:focus-visible,
+.logbook .cs-summary:focus-visible,
+.logbook .cs-search__clear:focus-visible,
+.logbook .cs-remove:focus-visible,
+.logbook .cs-clear:focus-visible {
+  outline: 2px solid var(--lb-focus);
+  outline-offset: -2px;
+}
+
+.cs-empty {
+  margin: 8px 0;
+  font-size: 14px;
+  text-align: center;
+  color: var(--lb-muted);
+}
+
+/* Selected list in the bottom sheet */
+.logbook .cs-clear {
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--lb-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logbook .cs-clear:disabled {
+  color: var(--c-faint);
+  cursor: default;
+}
+
+.cs-selected {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0 16px 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.cs-selected__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 6px 6px 12px;
+  font-size: 15px;
+  background: var(--c-surface-2);
+  border-radius: 6px;
+}
+
+.logbook .cs-remove {
+  flex: none;
+  min-width: 84px;
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--lb-remove);
+  background: transparent;
+  border: 1px solid var(--lb-remove);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logbook .cs-remove:hover {
+  color: #1f2026;
+  background: var(--lb-remove);
+}
+
+.logbook .bs-primary {
+  box-shadow: none;
+}
+
+/* ---------- Review ---------- */
+
+.lr-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lr-section__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lb-link-accent);
+}
+
+.lr-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+  overflow: hidden;
+  background: var(--lb-surface);
+  border: 1px solid var(--lb-border);
+  border-top: 3px solid var(--lb-accent);
+  border-radius: var(--lb-radius);
+  box-shadow: var(--lb-shadow);
+}
+
+.lr-item {
+  min-width: 0;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--lb-border);
+}
+
+.lr-item:nth-child(odd):not(.lr-item--wide) {
+  border-right: 1px solid var(--lb-border);
+}
+
+.lr-item--wide {
+  grid-column: 1 / -1;
+}
+
+.lr-item:last-child {
+  border-bottom: none;
+}
+
+.lr-item__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--lb-muted);
+}
+
+.lr-item__value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 0;
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.lr-alarm {
+  flex: none;
+}
+
+.lr-alarm--critical {
+  color: #ff6b6b;
+}
+
+.lr-alarm--warning {
+  color: #ffb703;
+}
+
+.lr-alarm--ok {
+  color: #22c55e;
+}
+
+.lr-alarm--info {
+  color: var(--lb-link-accent);
+}
+
+.lr-alarm__cut {
+  stroke: var(--lb-surface);
+}
+
+/* ---------- Result ---------- */
+
+.lb-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 70vh;
+  padding: 32px 24px;
+  color: #fff;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.lb-result--success {
+  background: var(--lb-success);
+}
+
+.lb-result--error {
+  background: var(--lb-failure);
+}
+
+.lb-result__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: #1fae1f;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.lb-result--error .lb-result__icon {
+  color: #d63a3a;
+}
+
+.lb-result__title {
+  max-width: 260px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.lb-result__text {
+  max-width: 300px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}

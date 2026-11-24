@@ -1,0 +1,488 @@
+/*
+ * Smart Alerts page, light and dark palettes from the Figma design.
+ * The shared --c-* tokens are redefined here so the header and the loading
+ * skeletons pick up the page palette too.
+ */
+.notifications {
+  --nt-bg: #e8e8ea;
+  --nt-header: #f5f5f6;
+  --nt-surface: #f4f4f5;
+  --nt-surface-2: #e2e2e6;
+  --nt-text: #1d1d22;
+  --nt-muted: #6b6c75;
+  --nt-border: #d4d4d9;
+  --nt-on-alert: #141416;
+  --nt-accent: #0022ff;
+  --nt-accent-hover: #2742ff;
+  --nt-ok: #17a34a;
+  --nt-critical: #ff7676;
+  --nt-critical-label: #8a1d1d;
+  --nt-critical-band: #fde8e8;
+  --nt-critical-stripe: #ff6b6b;
+  --nt-warning: #ffb703;
+  --nt-warning-label: #6b4800;
+  --nt-warning-band: #fff4d4;
+  --nt-warning-stripe: #ffb703;
+  --nt-ack-label: #4a4b53;
+  --nt-hover: rgba(0, 0, 0, 0.05);
+  --nt-focus: #1d1d22;
+  --nt-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  --c-surface: var(--nt-surface);
+  --c-surface-2: var(--nt-surface-2);
+  --c-surface-muted: var(--nt-surface-2);
+  --c-border: var(--nt-border);
+  --c-shadow: transparent;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--nt-bg);
+  color: var(--nt-text);
+  color-scheme: light;
+  text-align: left;
+}
+
+:root[data-theme='dark'] .notifications {
+  --nt-bg: #1e1f24;
+  --nt-header: #1e1f24;
+  --nt-surface: #303238;
+  --nt-surface-2: #3b3d44;
+  --nt-text: #ffffff;
+  --nt-muted: #9c9da6;
+  --nt-border: #34363d;
+  --nt-accent: #0b2bff;
+  --nt-ok: #2fc256;
+  --nt-critical: #f47a7a;
+  --nt-critical-band: #6b3b3b;
+  --nt-critical-stripe: #ef6464;
+  --nt-warning-band: #4a4217;
+  --nt-ack-label: #d4d5db;
+  --nt-hover: rgba(255, 255, 255, 0.08);
+  --nt-focus: #ffffff;
+  --nt-card-shadow: none;
+
+  color-scheme: dark;
+}
+
+.notifications *,
+.notifications *::before,
+.notifications *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+
+.notifications .mobile-header {
+  background: var(--nt-header);
+  border-bottom: 1px solid var(--nt-border);
+  box-shadow: none;
+}
+
+.notifications .mobile-header__title {
+  font-size: 16px;
+  color: var(--nt-text);
+}
+
+.notifications .nt-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--nt-ok);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.notifications .nt-refresh:hover {
+  background: var(--nt-hover);
+}
+
+.notifications .nt-refresh:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.notifications .nt-refresh:focus-visible {
+  outline: 2px solid var(--nt-ok);
+  outline-offset: 2px;
+}
+
+/* ---------- Layout ---------- */
+
+.notifications__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  /* Leave room for the floating bottom nav */
+  padding: 14px 12px calc(130px + env(safe-area-inset-bottom));
+}
+
+.nt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------- Filters ---------- */
+
+.nt-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Scroll from the screen edge */
+  margin: 0 -12px;
+  padding: 2px 12px;
+}
+
+.nt-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.notifications .nt-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nt-muted);
+  background: transparent;
+  border: 1.5px solid var(--nt-border);
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.notifications .nt-chip--active {
+  color: var(--nt-bg);
+  background: var(--nt-text);
+  border-color: var(--nt-text);
+}
+
+/* ---------- Sections ---------- */
+
+.nt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nt-section__title {
+  margin: 4px 0 2px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--nt-text);
+}
+
+/* ---------- Active card ---------- */
+
+.nt-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: var(--nt-card-shadow);
+  animation: nt-in 0.25s ease both;
+}
+
+@keyframes nt-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.nt-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 12px 14px;
+  color: var(--nt-on-alert);
+  background: var(--nt-critical);
+}
+
+.nt-card--warning .nt-card__body {
+  background: var(--nt-warning);
+}
+
+.nt-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.nt-card__priority {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--nt-critical-label);
+}
+
+.nt-card--warning .nt-card__priority {
+  color: var(--nt-warning-label);
+}
+
+.nt-card__time {
+  flex: none;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.nt-card__title {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.nt-card__line {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.nt-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 12px;
+  background: var(--nt-critical-band);
+}
+
+.nt-card--warning .nt-card__footer {
+  background: var(--nt-warning-band);
+}
+
+.nt-badge {
+  flex: none;
+}
+
+.nt-since {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  color: var(--nt-text);
+}
+
+.nt-since__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.nt-since__value {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.notifications .nt-btn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 50%;
+  min-height: 42px;
+  padding: 17px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--nt-accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.notifications .nt-btn:hover:not(:disabled) {
+  background: var(--nt-accent-hover);
+}
+
+.notifications .nt-btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.notifications .nt-btn:focus-visible,
+.notifications .nt-chip:focus-visible {
+  outline: 2px solid var(--nt-focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Acknowledged card ---------- */
+
+.nt-card--acknowledged {
+  flex-direction: row;
+  background: var(--nt-surface);
+}
+
+/* Priority stripe */
+.nt-card--acknowledged::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  background: var(--nt-critical-stripe);
+}
+
+.nt-card--acknowledged.nt-card--warning::before {
+  background: var(--nt-warning-stripe);
+}
+
+.nt-card--acknowledged .nt-card__body,
+.nt-card--acknowledged.nt-card--warning .nt-card__body {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px 8px;
+  color: var(--nt-text);
+  background: transparent;
+}
+
+.nt-card--acknowledged .nt-card__priority {
+  color: var(--nt-ack-label);
+}
+
+.nt-card__ack {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.nt-acknowledged {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--nt-ok);
+}
+
+.nt-card__duration {
+  color: var(--nt-muted);
+}
+
+.nt-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Empty and error states ---------- */
+
+.nt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8vh;
+  padding: 32px 20px;
+  text-align: center;
+  background: var(--nt-surface);
+  border-radius: 8px;
+}
+
+.nt-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  color: var(--nt-ok);
+  background: rgba(47, 194, 86, 0.14);
+}
+
+.nt-empty--error .nt-empty__icon {
+  color: var(--nt-critical);
+  background: rgba(244, 122, 122, 0.14);
+}
+
+.nt-empty__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.nt-empty__text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--nt-muted);
+}
+
+.notifications .nt-btn--retry {
+  width: auto;
+  margin-top: 12px;
+  padding: 0 20px;
+}
+
+/* ---------- Acknowledge result ---------- */
+
+.nt-message {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border-left: 4px solid;
+  background: var(--nt-surface);
+}
+
+.nt-message--success {
+  color: var(--nt-ok);
+}
+
+.nt-message--error {
+  color: var(--nt-critical);
+}
+
+/* ---------- Tablets / iPad ---------- */
+@media (min-width: 640px) {
+  .notifications__content {
+    padding-top: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .nt-filters {
+    margin: 0;
+    padding: 2px 0;
+  }
+
+  .notifications .nt-btn {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-card {
+    animation: none;
+  }
+}

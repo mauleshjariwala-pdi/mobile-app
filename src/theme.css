@@ -1,0 +1,133 @@
+/*
+ * App-wide colour tokens. Components only use these variables, so switching
+ * <html data-theme="dark"> re-themes the whole app with CSS alone.
+ */
+
+:root {
+  color-scheme: light;
+
+  --c-bg: #f6f4fb;
+  --c-surface: #ffffff;
+  --c-surface-2: #faf9fc;
+  --c-surface-muted: #f1eff6;
+  --c-text: #1d1b26;
+  --c-muted: #6b6b76;
+  --c-faint: #b4b1bd;
+  --c-border: #e6e2ef;
+  --c-shadow: rgba(29, 27, 38, 0.06);
+  --c-shadow-strong: rgba(29, 27, 38, 0.1);
+  --c-overlay: rgba(29, 27, 38, 0.45);
+
+  --c-primary: #39953f;
+  --c-primary-soft: #edf7ee;
+  --c-highlight: linear-gradient(-10deg, #ffcd00 0%, #65c942 51%, #439539 100%);
+  --c-button: linear-gradient(166deg, #44ad72 0%, #39953f 100%);
+  --c-nav-ring: #e8f4e6;
+  /* Header is brand green in both themes (status bar icons on iOS are white) */
+  --c-header-gradient: linear-gradient(110deg, #3b8f3f 0%, #4fae45 55%, #7cc743 85%, #b8d630 110%);
+  /* Android: status bar is a solid #439539 (theme-color), so the header starts
+     with that exact colour at its top edge and only shades vertically. */
+  --c-header-gradient-android: linear-gradient(180deg, #439539 0%, #4aa545 100%);
+
+  --c-critical: #e5484d;
+  --c-critical-soft: #fdecec;
+  --c-critical-text: #b42318;
+  --c-critical-border: #f6c4c5;
+  --c-critical-tint: #fdf0f0;
+
+  --c-warning: #f5b800;
+  --c-warning-soft: #fff6d6;
+  --c-warning-text: #8a6100;
+
+  --c-ok-text: #2e7d32;
+  --c-ok-soft: #e6f4e7;
+  --c-ok-border: #cfe9d2;
+  --c-ok-tint: #eaf7ec;
+
+  --c-info-text: #1d5fb8;
+  --c-info-soft: #e7f0fc;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --c-bg: #111215;
+  --c-surface: #1b1c21;
+  --c-surface-2: #202127;
+  --c-surface-muted: #2a2b32;
+  --c-text: #ececf1;
+  --c-muted: #a09fab;
+  --c-faint: #6d6c78;
+  --c-border: #2e2f37;
+  --c-shadow: rgba(0, 0, 0, 0.35);
+  --c-shadow-strong: rgba(0, 0, 0, 0.5);
+  --c-overlay: rgba(0, 0, 0, 0.6);
+
+  --c-primary: #5cc062;
+  --c-primary-soft: rgba(92, 192, 98, 0.15);
+  --c-nav-ring: #1f3324;
+
+  --c-critical: #f0565b;
+  --c-critical-soft: rgba(240, 86, 91, 0.16);
+  --c-critical-text: #ff8f92;
+  --c-critical-border: rgba(240, 86, 91, 0.45);
+  --c-critical-tint: rgba(240, 86, 91, 0.08);
+
+  --c-warning: #f5c400;
+  --c-warning-soft: rgba(245, 196, 0, 0.15);
+  --c-warning-text: #f7cf4a;
+
+  --c-ok-text: #7fd685;
+  --c-ok-soft: rgba(92, 192, 98, 0.15);
+  --c-ok-border: rgba(92, 192, 98, 0.4);
+  --c-ok-tint: rgba(92, 192, 98, 0.1);
+
+  --c-info-text: #8db8ff;
+  --c-info-soft: rgba(80, 140, 255, 0.16);
+}
+
+:root.android {
+  --c-header-gradient: var(--c-header-gradient-android);
+}
+
+html {
+  background: var(--c-bg);
+  /* Stop iOS enlarging text when the phone is rotated */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/*
+ * iOS home-screen app bug (WebKit 301108): with the translucent status bar,
+ * iOS makes the viewport shorter than the screen by the status-bar height
+ * while the page is shorter than the screen, and clips fixed elements (the
+ * bottom nav) at that edge until the user scrolls. A page at least as tall as
+ * the screen gets the full viewport, so make <html> that tall. min() caps it
+ * at the real screen height so nothing scrolls when the status bar is opaque.
+ * Fix from https://github.com/frappe/frappe-ui/pull/1284
+ */
+@media (display-mode: standalone) {
+  html {
+    min-height: min(100lvh, calc(100% + env(safe-area-inset-top)));
+  }
+}
+
+/* Form controls use the app font instead of the browser default */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  margin: 0;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}

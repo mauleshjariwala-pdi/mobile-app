@@ -1,0 +1,557 @@
+/*
+ * Settings page, light and dark palettes from the Figma design.
+ * The shared --c-* tokens are redefined here so the header, the FAQ and the
+ * logout dialog pick up the page palette too.
+ */
+.more {
+  --mr-bg: #e6e6e8;
+  --mr-header: #f4f4f5;
+  --mr-card: #f5f5f6;
+  --mr-card-border: #d4d4d9;
+  --mr-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --mr-control: #dfdfe3;
+  --mr-control-text: #2a2a30;
+  --mr-text: #2a2a30;
+  --mr-muted: #6b6c75;
+  --mr-section: #7a7b84;
+  --mr-divider: #e2e2e6;
+  --mr-accent: #0022ff;
+  --mr-accent-hover: #2340ff;
+  --mr-ok: #12a03a;
+  --mr-hover: rgba(0, 0, 0, 0.04);
+  --mr-secondary-hover: #ececef;
+  --mr-focus: #2a2a30;
+
+  --c-bg: var(--mr-bg);
+  --c-surface: var(--mr-card);
+  --c-surface-2: var(--mr-secondary-hover);
+  --c-surface-muted: var(--mr-control);
+  --c-text: var(--mr-text);
+  --c-muted: var(--mr-muted);
+  --c-faint: #9a9ba3;
+  --c-border: var(--mr-card-border);
+  --c-shadow: transparent;
+  --c-overlay: rgba(29, 27, 38, 0.45);
+  --c-primary: var(--mr-ok);
+  --c-critical: #ff5c5c;
+  --c-critical-soft: rgba(255, 92, 92, 0.12);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--mr-bg);
+  color: var(--mr-text);
+  color-scheme: light;
+  text-align: left;
+}
+
+:root[data-theme='dark'] .more {
+  --mr-bg: #111216;
+  --mr-header: #111216;
+  --mr-card: #1f2026;
+  --mr-card-border: #2e3038;
+  --mr-card-shadow: none;
+  --mr-control: #2d2f37;
+  --mr-control-text: #b3b4bc;
+  --mr-text: #ffffff;
+  --mr-muted: #b3b4bc;
+  --mr-section: #9c9da6;
+  --mr-divider: #23252c;
+  --mr-ok: #22c55e;
+  --mr-hover: rgba(255, 255, 255, 0.04);
+  --mr-secondary-hover: #2a2c33;
+  --mr-focus: #ffffff;
+
+  --c-faint: #6d6e78;
+  --c-overlay: rgba(0, 0, 0, 0.6);
+  --c-critical: #ff6b6b;
+  --c-critical-soft: rgba(255, 107, 107, 0.16);
+
+  color-scheme: dark;
+}
+
+.more *,
+.more *::before,
+.more *::after {
+  box-sizing: border-box;
+}
+
+.more__content {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  /* Leave room for the floating bottom nav */
+  padding: 16px 0 calc(110px + env(safe-area-inset-bottom));
+}
+
+/* ---------- Header ---------- */
+
+.more .mobile-header {
+  background: var(--mr-header);
+  border-bottom: 1px solid var(--mr-card-border);
+  box-shadow: none;
+}
+
+.more .mobile-header__title {
+  font-size: 16px;
+  color: var(--mr-text);
+}
+
+.more .mobile-header .mobile-header__back,
+.more .mobile-header .mobile-header__back:hover {
+  color: var(--mr-text);
+}
+
+.more .mobile-header .mobile-header__back:hover {
+  background: var(--mr-hover);
+}
+
+/* ---------- Rig and sections ---------- */
+
+.mr-rig {
+  margin: 0;
+  padding: 0 12px 16px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  border-bottom: 1px solid var(--mr-card-border);
+}
+
+.mr-section {
+  padding: 16px 12px 20px;
+  border-bottom: 1px solid var(--mr-card-border);
+}
+
+.mr-section:last-child {
+  border-bottom: none;
+}
+
+.mr-section-title {
+  margin: 0 0 10px;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mr-section);
+}
+
+.mr-group {
+  overflow: hidden;
+  background: var(--mr-card);
+  border: 1px solid var(--mr-card-border);
+  border-radius: 8px;
+  box-shadow: var(--mr-card-shadow);
+}
+
+/* ---------- Rows ---------- */
+
+.mr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 8px 8px 14px;
+}
+
+.mr-row + .mr-row {
+  border-top: 1px solid var(--mr-divider);
+}
+
+.mr-row__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mr-row__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mr-text);
+}
+
+.mr-row__subtitle {
+  font-size: 14px;
+  color: var(--mr-muted);
+}
+
+/* ---------- Segmented control ---------- */
+
+.mr-segmented {
+  flex: none;
+  display: flex;
+  gap: 2px;
+  padding: 0;
+  background: var(--mr-control);
+  border-radius: 999px;
+}
+
+.more .mr-segmented__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 70px;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--mr-control-text);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.more .mr-segmented__option[aria-label] {
+  min-width: 44px;
+  padding: 0 10px;
+}
+
+.more .mr-segmented__option:hover:not(.mr-segmented__option--selected) {
+  color: var(--mr-text);
+}
+
+.more .mr-segmented__option--selected {
+  color: #fff;
+  background: var(--mr-accent);
+}
+
+/* ---------- Buttons ---------- */
+
+.more .mr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.more .mr-btn--secondary {
+  color: var(--mr-text);
+  background: var(--mr-card);
+  border: 1px solid var(--mr-card-border);
+  box-shadow: var(--mr-card-shadow);
+}
+
+.more .mr-btn--secondary:hover:not(:disabled) {
+  background: var(--mr-secondary-hover);
+}
+
+.more .mr-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.more .mr-btn:focus-visible,
+.more .mr-segmented__option:focus-visible {
+  outline: 2px solid var(--mr-focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Account ---------- */
+
+/* White card like the Appearance rows (.mr-group gives the card) */
+.mr-signed-in {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  margin: 0 0 10px;
+  padding: 10px 14px;
+}
+
+/* Column 1: user profile icon in a round badge */
+.mr-signed-in__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--mr-text);
+  background: var(--mr-control);
+  border: 1px solid var(--mr-card-border);
+  border-radius: 5px;
+}
+
+/* Column 2: "Signed in as <name>", the e-mail on the line below */
+.mr-signed-in__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+  font-size: 16px;
+  color: var(--mr-muted);
+}
+
+.mr-signed-in strong {
+  color: var(--mr-text);
+}
+
+.mr-signed-in__email {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mr-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mr-version {
+  margin: 14px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: var(--mr-section);
+}
+
+@media (min-width: 640px) {
+  .more__content {
+    padding-top: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more .mr-segmented__option {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ---------- Switch Rigs: same tiles as the logbook mud pumps ---------- */
+
+.more {
+  --mr-panel: #dcdce0;
+  --mr-tile-text: #3a3b42;
+  --mr-tile-dimmed: #8a8b93;
+  --mr-selected: radial-gradient(95.67% 100% at 50% 0%, #001339 0%, #0022ff 100%);
+  --mr-disabled-bg: #c9cad0;
+  --mr-disabled-text: #7c7d86;
+}
+
+:root[data-theme='dark'] .more {
+  --mr-panel: #18191e;
+  --mr-tile-text: #e6e6ea;
+  --mr-tile-dimmed: #7d7e87;
+  --mr-disabled-bg: #4a4c5a;
+  --mr-disabled-text: #8e8f99;
+}
+
+.mr-rigs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 12px;
+}
+
+.mr-rigs__heading {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.mr-equipment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  background: var(--mr-panel);
+  border: 1px solid var(--mr-card-border);
+  border-radius: 10px;
+}
+
+.mr-equipment__label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--mr-muted);
+}
+
+.mr-rig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+.mr-rig-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--mr-tile-text);
+  background: var(--mr-card);
+  border: 1px solid var(--mr-card-border);
+  border-radius: 8px;
+  box-shadow: var(--mr-card-shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.mr-rig-tile input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mr-rig-tile:hover:not(.mr-rig-tile--selected) {
+  background-color: var(--mr-hover);
+}
+
+.mr-rig-tile:has(input:focus-visible) {
+  outline: 2px solid var(--mr-focus);
+  outline-offset: 2px;
+}
+
+/* The other rigs fade back next to the selected one */
+.mr-rig-grid:has(.mr-rig-tile--selected) .mr-rig-tile:not(.mr-rig-tile--selected) {
+  color: var(--mr-tile-dimmed);
+}
+
+.mr-rig-tile--selected {
+  color: #fff;
+  background: var(--mr-selected);
+  border-color: transparent;
+}
+
+/* Rig search: same look as the logbook component search */
+.mr-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 12px;
+  color: var(--mr-muted);
+  background: var(--mr-card);
+  border: 1px solid var(--mr-card-border);
+  border-radius: 8px;
+}
+
+.mr-search:focus-within {
+  border-color: var(--mr-focus);
+}
+
+/* 16px stops iOS zooming into the field */
+.mr-search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  color: var(--mr-tile-text);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.mr-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.more .mr-search__clear {
+  display: flex;
+  padding: 6px;
+  color: var(--mr-muted);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.more .mr-search__clear:focus-visible {
+  outline: 2px solid var(--mr-focus);
+  outline-offset: -2px;
+}
+
+.mr-rigs__empty {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--mr-muted);
+}
+
+.more .mr-btn--primary {
+  color: #fff;
+  background: var(--mr-accent);
+}
+
+.more .mr-btn--primary:hover:not(:disabled) {
+  background: var(--mr-accent-hover);
+}
+
+.more .mr-btn--primary:disabled {
+  opacity: 1;
+  color: var(--mr-disabled-text);
+  background: var(--mr-disabled-bg);
+}
+
+.more .mr-btn--block {
+  width: 100%;
+  min-height: 52px;
+  font-size: 16px;
+}
+
+/* First-time rig page */
+.more__content--setup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mr-rigs__intro,
+.mr-rigs__required {
+  margin: -6px 0 0;
+  font-size: 14px;
+  color: var(--mr-muted);
+}
+
+.mr-rigs__required {
+  margin: 0;
+  font-weight: 600;
+}
+
+.more .mr-link {
+  align-self: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mr-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.more .mr-link:focus-visible {
+  outline: 2px solid var(--mr-focus);
+  outline-offset: 2px;
+}
